@@ -1,5 +1,7 @@
-import { Stack, StackProps } from "aws-cdk-lib";
+import { CfnOutput, Stack, StackProps } from "aws-cdk-lib";
 import { AttributeType, BillingMode, Table } from "aws-cdk-lib/aws-dynamodb";
+import { FunctionUrlAuthType } from "aws-cdk-lib/aws-lambda";
+import { NodejsFunction } from "aws-cdk-lib/aws-lambda-nodejs";
 import { Construct } from "constructs";
 
 export class GroceryStoreBackendStack extends Stack {
@@ -18,6 +20,18 @@ export class GroceryStoreBackendStack extends Stack {
         name: "SK",
         type: AttributeType.STRING,
       },
+    });
+
+    const addGroceryItemsFn = new NodejsFunction(this, "addGroceryItemsFn", {
+      entry: "lambdas/add-grocery-items-fn.ts",
+    });
+
+    const fnUrl = addGroceryItemsFn.addFunctionUrl({
+      authType: FunctionUrlAuthType.NONE,
+    });
+
+    new CfnOutput(this, "add-grocery-items-fn-url", {
+      value: fnUrl.url,
     });
   }
 }
