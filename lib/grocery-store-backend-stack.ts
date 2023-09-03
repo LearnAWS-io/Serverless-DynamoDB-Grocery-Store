@@ -24,7 +24,12 @@ export class GroceryStoreBackendStack extends Stack {
 
     const addGroceryItemsFn = new NodejsFunction(this, "addGroceryItemsFn", {
       entry: "lambdas/add-grocery-items-fn.ts",
+      environment: {
+        TableName: groceryTable.tableName,
+      },
     });
+
+    groceryTable.grantWriteData(addGroceryItemsFn);
 
     const fnUrl = addGroceryItemsFn.addFunctionUrl({
       authType: FunctionUrlAuthType.NONE,
