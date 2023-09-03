@@ -1,16 +1,23 @@
-import * as cdk from 'aws-cdk-lib';
-import { Construct } from 'constructs';
-// import * as sqs from 'aws-cdk-lib/aws-sqs';
+import { Stack, StackProps } from "aws-cdk-lib";
+import { AttributeType, BillingMode, Table } from "aws-cdk-lib/aws-dynamodb";
+import { Construct } from "constructs";
 
-export class GroceryStoreBackendStack extends cdk.Stack {
-  constructor(scope: Construct, id: string, props?: cdk.StackProps) {
+export class GroceryStoreBackendStack extends Stack {
+  constructor(scope: Construct, id: string, props?: StackProps) {
     super(scope, id, props);
 
-    // The code that defines your stack goes here
-
-    // example resource
-    // const queue = new sqs.Queue(this, 'GroceryStoreBackendQueue', {
-    //   visibilityTimeout: cdk.Duration.seconds(300)
-    // });
+    // const groceryTableImp = Table.fromTableName(this, "groceryTable", "groceryTable")
+    const groceryTable = new Table(this, "groceryTable", {
+      tableName: "grocery_table",
+      billingMode: BillingMode.PAY_PER_REQUEST,
+      partitionKey: {
+        name: "PK",
+        type: AttributeType.STRING,
+      },
+      sortKey: {
+        name: "SK",
+        type: AttributeType.STRING,
+      },
+    });
   }
 }
