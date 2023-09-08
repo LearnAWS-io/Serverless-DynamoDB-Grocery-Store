@@ -1,7 +1,7 @@
 import { APIGatewayProxyHandlerV2 } from "aws-lambda";
-import { PutItemCommand } from "@aws-sdk/client-dynamodb";
-import { errors } from "@vinejs/vine";
+import { BatchWriteItemCommand } from "@aws-sdk/client-dynamodb";
 import { addGroceryObjValidator } from "../schemas/add-grocery";
+import { errors } from "@vinejs/vine";
 import { dbClient } from "./db-client";
 
 export const handler: APIGatewayProxyHandlerV2<
@@ -18,24 +18,31 @@ export const handler: APIGatewayProxyHandlerV2<
     }
     const json = JSON.parse(body);
     const items = await addGroceryObjValidator.validate(json);
-    const { type, name, price, stocks, category } = items[0];
 
-    const putItemCmd = new PutItemCommand({
-      TableName,
-      Item: {
-        PK: { S: category },
-        SK: { S: `${name}#${type}` },
-        stocks: { N: stocks.toString() },
-        price: {
-          M: {
-            inr: { N: price.inr.toString() },
-            usd: { N: price.usd.toString() },
-          },
-        },
+    const batchPutItemCmd = new BatchWriteItemCommand({
+      RequestItems: {
+        [TableName]: items.map((item) => {
+          const { type, name, price, stocks, category } = item;
+          return {
+            PutRequest: {
+              Item: {
+                PK: { S: category },
+                SK: { S: `${name}#${type}` },
+                stocks: { N: stocks.toString() },
+                price: {
+                  M: {
+                    inr: { N: price.inr.toString() },
+                    usd: { N: price.usd.toString() },
+                  },
+                },
+              },
+            },
+          };
+        }),
       },
     });
 
-    const res = await dbClient.send(putItemCmd);
+    const res = await dbClient.send(batchPutItemCmd);
     return {
       body: res,
     };
