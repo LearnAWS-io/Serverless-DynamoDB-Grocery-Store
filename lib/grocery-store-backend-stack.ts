@@ -1,6 +1,7 @@
+import { HttpApi, HttpMethod } from "@aws-cdk/aws-apigatewayv2-alpha";
+import { HttpLambdaIntegration } from "@aws-cdk/aws-apigatewayv2-integrations-alpha";
 import { CfnOutput, Stack, StackProps } from "aws-cdk-lib";
 import { AttributeType, BillingMode, Table } from "aws-cdk-lib/aws-dynamodb";
-import { FunctionUrlAuthType } from "aws-cdk-lib/aws-lambda";
 import { NodejsFunction } from "aws-cdk-lib/aws-lambda-nodejs";
 import { Construct } from "constructs";
 
@@ -42,13 +43,21 @@ export class GroceryStoreBackendStack extends Stack {
     });
 
     groceryTable.grantWriteData(addGroceryItemsFn);
-
-    const fnUrl = addGroceryItemsFn.addFunctionUrl({
-      authType: FunctionUrlAuthType.NONE,
+    const httpApi = new HttpApi(this, "HttpApi", {
+      apiName: "grocery-api",
     });
 
-    new CfnOutput(this, "add-grocery-items-fn-url", {
-      value: fnUrl.url,
+    httpApi.addRoutes({
+      path: "/item",
+      methods: [HttpMethod.POST],
+      integration: new HttpLambdaIntegration(
+        "add-grocery-fn-integration",
+        addGroceryItemsFn,
+      ),
+    });
+
+    new CfnOutput(this, "grocery-api-url", {
+      value: httpApi.url ?? "unkown",
     });
   }
 }

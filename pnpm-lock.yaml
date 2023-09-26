@@ -5,9 +5,21 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
+  '@aws-cdk/aws-apigatewayv2-alpha':
+    specifier: 2.97.1-alpha.0
+    version: 2.97.1-alpha.0(aws-cdk-lib@2.94.0)(constructs@10.0.0)
+  '@aws-cdk/aws-apigatewayv2-integrations-alpha':
+    specifier: 2.97.1-alpha.0
+    version: 2.97.1-alpha.0(@aws-cdk/aws-apigatewayv2-alpha@2.97.1-alpha.0)(aws-cdk-lib@2.94.0)(constructs@10.0.0)
   '@aws-sdk/client-dynamodb':
     specifier: ^3.405.0
     version: 3.405.0
+  '@thi.ng/base-n':
+    specifier: ^2.5.13
+    version: 2.5.13
+  '@thi.ng/ksuid':
+    specifier: ^3.2.5
+    version: 3.2.5
   '@vinejs/vine':
     specifier: ^1.6.0
     version: 1.6.0
@@ -67,6 +79,30 @@ packages:
 
   /@aws-cdk/asset-node-proxy-agent-v6@2.0.1:
     resolution: {integrity: sha512-DDt4SLdLOwWCjGtltH4VCST7hpOI5DzieuhGZsBpZ+AgJdSI2GCjklCXm0GCTwJG/SolkL5dtQXyUKgg9luBDg==}
+    dev: false
+
+  /@aws-cdk/aws-apigatewayv2-alpha@2.97.1-alpha.0(aws-cdk-lib@2.94.0)(constructs@10.0.0):
+    resolution: {integrity: sha512-kkVtZpVbnAM0WjDovjKQaosrzg1mrFDl+xefo2s34M/Eke/I2TOt5GIfWWqzR9psXX7EDP2TVVg/Xa+lsvH0zg==}
+    engines: {node: '>= 14.15.0'}
+    peerDependencies:
+      aws-cdk-lib: 2.97.1
+      constructs: ^10.0.0
+    dependencies:
+      aws-cdk-lib: 2.94.0(constructs@10.0.0)
+      constructs: 10.0.0
+    dev: false
+
+  /@aws-cdk/aws-apigatewayv2-integrations-alpha@2.97.1-alpha.0(@aws-cdk/aws-apigatewayv2-alpha@2.97.1-alpha.0)(aws-cdk-lib@2.94.0)(constructs@10.0.0):
+    resolution: {integrity: sha512-Gc/hwe4SA5mJKNoUgtzptE3fYAGhGwqYd6yFmgLrlQWUCZl2yBJXDnQX89alQ4G0/o50EK+h/s4cG8OoAdlkPQ==}
+    engines: {node: '>= 14.15.0'}
+    peerDependencies:
+      '@aws-cdk/aws-apigatewayv2-alpha': 2.97.1-alpha.0
+      aws-cdk-lib: 2.97.1
+      constructs: ^10.0.0
+    dependencies:
+      '@aws-cdk/aws-apigatewayv2-alpha': 2.97.1-alpha.0(aws-cdk-lib@2.94.0)(constructs@10.0.0)
+      aws-cdk-lib: 2.94.0(constructs@10.0.0)
+      constructs: 10.0.0
     dev: false
 
   /@aws-crypto/crc32@3.0.0:
@@ -1482,6 +1518,71 @@ packages:
       '@smithy/abort-controller': 2.0.5
       '@smithy/types': 2.2.2
       tslib: 2.6.2
+    dev: false
+
+  /@thi.ng/api@8.9.5:
+    resolution: {integrity: sha512-8rh1FypiQHzF/pDWqvvlRfRdr78nZe9n3HxbL5Swx9gFDfkU/ZIavW+8uLk8uZFAwnlkMnCOBeVsZEtIsqrVLw==}
+    engines: {node: '>=12.7'}
+    dev: false
+
+  /@thi.ng/base-n@2.5.13:
+    resolution: {integrity: sha512-2sy66ubA0aNH2Z5aEosuflplumLnJXQn6FNV7OpmagiXmrTqW+46bVgmRCgiNzc29A9prYqxy2evJwlUdm+iMQ==}
+    engines: {node: '>=12.7'}
+    dev: false
+
+  /@thi.ng/checks@3.4.5:
+    resolution: {integrity: sha512-f187dpm/VjzP3cMK5YhGPlM6zTXvKBu3WKQ9Rvf7uDe1p55FtSI7K4TvCEMxySWRGIzCXvvvQsvkrl7r3eYAqw==}
+    engines: {node: '>=12.7'}
+    dependencies:
+      tslib: 2.6.2
+    dev: false
+
+  /@thi.ng/errors@2.3.5:
+    resolution: {integrity: sha512-WH2p02goxTCF11p8H/4VIl8RmPZ7rJ00ogFOrQX7mO3zxi1/vTqygR7sVuJszlx5a5eOrMglNivyqNZwr912cg==}
+    engines: {node: '>=12.7'}
+    dev: false
+
+  /@thi.ng/hex@2.3.17:
+    resolution: {integrity: sha512-rfaeRg4pt+FuL84NxMaylHkER4YIN+OCrd0I/UWhad17qUIjYL5N5FyylVpDR8pYW32GbNYLGIVn92H32aaYYA==}
+    engines: {node: '>=12.7'}
+    dev: false
+
+  /@thi.ng/ksuid@3.2.5:
+    resolution: {integrity: sha512-MhKoD5vd7RqMm80+NwWaDSMe2sr0ck0NhXG9rkx+dtXwnCeyZjgP7IONDkNcEATc7w1v+QZ/k3hF4AJtdXoKnQ==}
+    engines: {node: '>=12.7'}
+    hasBin: true
+    dependencies:
+      '@thi.ng/base-n': 2.5.13
+      '@thi.ng/errors': 2.3.5
+      '@thi.ng/random': 3.6.4
+      '@thi.ng/strings': 3.4.13
+    dev: false
+
+  /@thi.ng/memoize@3.1.38:
+    resolution: {integrity: sha512-/b8ad8jdNSLQ8/xVvokus1Xnbbm11HVyQUhDps67zpLiwt7XA44RATRmpyCHwR+RZlI7oUtqcNnSMNkVffue/Q==}
+    engines: {node: '>=12.7'}
+    dependencies:
+      '@thi.ng/api': 8.9.5
+    dev: false
+
+  /@thi.ng/random@3.6.4:
+    resolution: {integrity: sha512-HGdMlYlhved77a6jwCaGeoXOrRKG/YdLrDyJ6dRk7mP6vNkLogoYH6QDZM3l+z8daJ3XqR/2GLq4NCqMnAReuQ==}
+    engines: {node: '>=12.7'}
+    dependencies:
+      '@thi.ng/api': 8.9.5
+      '@thi.ng/checks': 3.4.5
+      '@thi.ng/errors': 2.3.5
+      '@thi.ng/hex': 2.3.17
+    dev: false
+
+  /@thi.ng/strings@3.4.13:
+    resolution: {integrity: sha512-U6QEmHOrmKfwBEt5XlqclQ6QEyklLQ39Dov0sWFufOhCuyDAvUHsJ3VarvSpwgfqMOqd7VCqdINOZfBlrq4dQw==}
+    engines: {node: '>=12.7'}
+    dependencies:
+      '@thi.ng/api': 8.9.5
+      '@thi.ng/errors': 2.3.5
+      '@thi.ng/hex': 2.3.17
+      '@thi.ng/memoize': 3.1.38
     dev: false
 
   /@tsconfig/node10@1.0.9:
