@@ -22,6 +22,8 @@
   },
   "dependencies": {
     "@aws-sdk/client-dynamodb": "^3.405.0",
+    "@thi.ng/base-n": "^2.5.13",
+    "@thi.ng/ksuid": "^3.2.5",
     "@vinejs/vine": "^1.6.0",
     "aws-cdk-lib": "2.94.0",
     "constructs": "^10.0.0",

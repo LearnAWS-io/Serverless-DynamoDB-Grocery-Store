@@ -22,6 +22,18 @@ export class GroceryStoreBackendStack extends Stack {
       },
     });
 
+    groceryTable.addGlobalSecondaryIndex({
+      indexName: "GSI1",
+      partitionKey: {
+        name: "GSI1PK",
+        type: AttributeType.STRING,
+      },
+      sortKey: {
+        name: "GSI1SK",
+        type: AttributeType.STRING,
+      },
+    });
+
     const addGroceryItemsFn = new NodejsFunction(this, "addGroceryItemsFn", {
       entry: "lambdas/add-grocery-items-fn.ts",
       environment: {

@@ -1,6 +1,6 @@
 {
   "app": "npx ts-node --prefer-ts-exts bin/grocery-store-backend.ts",
-  "requiresApproval": "never",
+  "requireApproval": "never",
   "watch": {
     "include": ["**"],
     "exclude": [
