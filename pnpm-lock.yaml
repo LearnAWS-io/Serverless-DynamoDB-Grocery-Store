@@ -14,6 +14,9 @@ dependencies:
   '@aws-sdk/client-dynamodb':
     specifier: ^3.405.0
     version: 3.405.0
+  '@aws-sdk/util-dynamodb':
+    specifier: ^3.418.0
+    version: 3.418.0(@aws-sdk/client-dynamodb@3.405.0)
   '@thi.ng/base-n':
     specifier: ^2.5.13
     version: 2.5.13
@@ -500,6 +503,16 @@ packages:
     engines: {node: '>=14.0.0'}
     dependencies:
       '@smithy/types': 2.2.2
+      tslib: 2.6.2
+    dev: false
+
+  /@aws-sdk/util-dynamodb@3.418.0(@aws-sdk/client-dynamodb@3.405.0):
+    resolution: {integrity: sha512-5DI0m9ipb6yPfWm9DmXCPJrXttLeioWpHQMGbE+MmvAsNy2AmUJZ4kzmmUEE6YazseL78OtNmA7Pm4Bqs5T/lg==}
+    engines: {node: '>=14.0.0'}
+    peerDependencies:
+      '@aws-sdk/client-dynamodb': ^3.0.0
+    dependencies:
+      '@aws-sdk/client-dynamodb': 3.405.0
       tslib: 2.6.2
     dev: false
 

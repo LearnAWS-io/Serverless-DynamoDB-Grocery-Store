@@ -24,6 +24,7 @@
     "@aws-cdk/aws-apigatewayv2-alpha": "2.97.1-alpha.0",
     "@aws-cdk/aws-apigatewayv2-integrations-alpha": "2.97.1-alpha.0",
     "@aws-sdk/client-dynamodb": "^3.405.0",
+    "@aws-sdk/util-dynamodb": "^3.418.0",
     "@thi.ng/base-n": "^2.5.13",
     "@thi.ng/ksuid": "^3.2.5",
     "@vinejs/vine": "^1.6.0",

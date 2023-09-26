@@ -42,7 +42,16 @@ export class GroceryStoreBackendStack extends Stack {
       },
     });
 
+    const getGroceryItemFn = new NodejsFunction(this, "getGroceryItemFn", {
+      entry: "lambdas/get-grocery-item-fn.ts",
+      environment: {
+        TableName: groceryTable.tableName,
+      },
+    });
+
     groceryTable.grantWriteData(addGroceryItemsFn);
+    groceryTable.grantReadData(getGroceryItemFn);
+
     const httpApi = new HttpApi(this, "HttpApi", {
       apiName: "grocery-api",
     });
@@ -53,6 +62,15 @@ export class GroceryStoreBackendStack extends Stack {
       integration: new HttpLambdaIntegration(
         "add-grocery-fn-integration",
         addGroceryItemsFn,
+      ),
+    });
+
+    httpApi.addRoutes({
+      path: "/item/{id}",
+      methods: [HttpMethod.GET],
+      integration: new HttpLambdaIntegration(
+        "get-grocery-fn-integration",
+        getGroceryItemFn,
       ),
     });
 
