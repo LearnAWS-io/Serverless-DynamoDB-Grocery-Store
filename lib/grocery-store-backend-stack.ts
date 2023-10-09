@@ -49,6 +49,17 @@ export class GroceryStoreBackendStack extends Stack {
       },
     });
 
+    const listAllGroceryItemsFn = new NodejsFunction(
+      this,
+      "listAllGroceryItemsFn ",
+      {
+        entry: "lambdas/list-grocery-items-fn.ts",
+        environment: {
+          TableName: groceryTable.tableName,
+        },
+      },
+    );
+
     const deleteGroceryItemFn = new NodejsFunction(
       this,
       "deleteGroceryItemFn",
@@ -73,11 +84,13 @@ export class GroceryStoreBackendStack extends Stack {
     groceryTable.grantWriteData(addGroceryItemsFn);
     groceryTable.grantWriteData(deleteGroceryItemFn);
     groceryTable.grantReadData(getGroceryItemFn);
+    groceryTable.grantReadData(listAllGroceryItemsFn);
     groceryTable.grantWriteData(updateGroceryItemFn);
 
     const httpApi = new HttpApi(this, "HttpApi", {
       apiName: "grocery-api",
     });
+
     // Add grocery items API
     httpApi.addRoutes({
       path: "/item",
@@ -88,6 +101,15 @@ export class GroceryStoreBackendStack extends Stack {
       ),
     });
 
+    // Add grocery items API
+    httpApi.addRoutes({
+      path: "/list_items",
+      methods: [HttpMethod.GET],
+      integration: new HttpLambdaIntegration(
+        "list-grocery-fn-integration",
+        listAllGroceryItemsFn,
+      ),
+    });
     // GET grocery item API
     httpApi.addRoutes({
       path: "/item/{id}",
