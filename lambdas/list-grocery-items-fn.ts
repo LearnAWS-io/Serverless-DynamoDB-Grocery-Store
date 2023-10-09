@@ -11,8 +11,14 @@ export const handler: APIGatewayProxyHandlerV2 = async (e) => {
       throw "TableName env variable is undefined";
     }
 
+    const params = e.queryStringParameters;
+
     const scanCmd = new ScanCommand({
       TableName,
+      Limit: params?.limit ? Number(params.limit) : undefined,
+      ExclusiveStartKey: params?.nextToken
+        ? { PK: { S: params.nextToken }, SK: { S: params.nextToken } }
+        : undefined,
     });
 
     const res = await dbClient.send(scanCmd);
@@ -39,7 +45,7 @@ export const handler: APIGatewayProxyHandlerV2 = async (e) => {
       headers: ResponseHeaders,
       body: JSON.stringify({
         items,
-        // nextToken:
+        nextToken: res.LastEvaluatedKey?.PK.S,
       }),
     };
 
