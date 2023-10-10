@@ -1,5 +1,9 @@
 import { APIGatewayProxyHandlerV2, APIGatewayProxyResultV2 } from "aws-lambda";
-import { ScanCommand } from "@aws-sdk/client-dynamodb";
+import {
+  ScanCommand,
+  QueryCommand,
+  AttributeValue,
+} from "@aws-sdk/client-dynamodb";
 import { dbClient } from "./db-client";
 import { ResponseHeaders } from "./constants";
 import { unmarshall } from "@aws-sdk/util-dynamodb";
@@ -13,15 +17,40 @@ export const handler: APIGatewayProxyHandlerV2 = async (e) => {
 
     const params = e.queryStringParameters;
 
-    const scanCmd = new ScanCommand({
+    // run query command if we want to filter with category and item name
+    const category = params?.category?.toUpperCase();
+    const item_name = params?.name?.toUpperCase();
+
+    const exprAttrValue: Record<string, AttributeValue> = {};
+    if (category) {
+      exprAttrValue[":category"] = { S: category };
+      if (item_name) {
+        exprAttrValue[":item_name"] = { S: item_name };
+      }
+    }
+
+    const sharedCommandInput = {
       TableName,
       Limit: params?.limit ? Number(params.limit) : undefined,
       ExclusiveStartKey: params?.nextToken
         ? { PK: { S: params.nextToken }, SK: { S: params.nextToken } }
         : undefined,
-    });
+    };
 
-    const res = await dbClient.send(scanCmd);
+    const queryCmd = category
+      ? new QueryCommand({
+          IndexName: "GSI1",
+          KeyConditionExpression: `GSI1PK = :category${
+            item_name ? " AND begins_with(GSI1SK, :item_name)" : ""
+          }`,
+          ExpressionAttributeValues: exprAttrValue,
+          ...sharedCommandInput,
+        })
+      : new ScanCommand({
+          ...sharedCommandInput,
+        });
+
+    const res = await dbClient.send(queryCmd);
     if (!res.Items) {
       return {
         statusCode: 404,
