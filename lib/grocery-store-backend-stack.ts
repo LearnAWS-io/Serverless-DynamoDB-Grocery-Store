@@ -2,7 +2,12 @@ import { HttpApi, HttpMethod } from "@aws-cdk/aws-apigatewayv2-alpha";
 import { HttpLambdaIntegration } from "@aws-cdk/aws-apigatewayv2-integrations-alpha";
 import { CfnOutput, Stack, StackProps } from "aws-cdk-lib";
 import { AttributeType, BillingMode, Table } from "aws-cdk-lib/aws-dynamodb";
-import { NodejsFunction } from "aws-cdk-lib/aws-lambda-nodejs";
+import { Runtime } from "aws-cdk-lib/aws-lambda";
+import {
+  NodejsFunction,
+  NodejsFunctionProps,
+  OutputFormat,
+} from "aws-cdk-lib/aws-lambda-nodejs";
 import { Construct } from "constructs";
 
 export class GroceryStoreBackendStack extends Stack {
@@ -35,11 +40,24 @@ export class GroceryStoreBackendStack extends Stack {
       },
     });
 
+    const defaultLambdaParams: NodejsFunctionProps = {
+      runtime: Runtime.NODEJS_18_X,
+      bundling: {
+        format: OutputFormat.ESM,
+        minify: true,
+        banner:
+          "import { createRequire } from 'module';const require = createRequire(import.meta.url)",
+        target: "node18",
+      },
+      memorySize: 500,
+    };
+
     const addGroceryItemsFn = new NodejsFunction(this, "addGroceryItemsFn", {
       entry: "lambdas/add-grocery-items-fn.ts",
       environment: {
         TableName: groceryTable.tableName,
       },
+      ...defaultLambdaParams,
     });
 
     const getGroceryItemFn = new NodejsFunction(this, "getGroceryItemFn", {
@@ -47,6 +65,7 @@ export class GroceryStoreBackendStack extends Stack {
       environment: {
         TableName: groceryTable.tableName,
       },
+      ...defaultLambdaParams,
     });
 
     const listAllGroceryItemsFn = new NodejsFunction(
@@ -57,6 +76,7 @@ export class GroceryStoreBackendStack extends Stack {
         environment: {
           TableName: groceryTable.tableName,
         },
+        ...defaultLambdaParams,
       },
     );
 
@@ -68,6 +88,7 @@ export class GroceryStoreBackendStack extends Stack {
         environment: {
           TableName: groceryTable.tableName,
         },
+        ...defaultLambdaParams,
       },
     );
 
@@ -79,6 +100,7 @@ export class GroceryStoreBackendStack extends Stack {
         environment: {
           TableName: groceryTable.tableName,
         },
+        ...defaultLambdaParams,
       },
     );
     groceryTable.grantWriteData(addGroceryItemsFn);
