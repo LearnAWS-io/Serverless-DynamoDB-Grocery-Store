@@ -1,0 +1,14 @@
+### Get all items
+GET {{HOST}}/list_items
+
+### Get with limit
+GET {{HOST}}/list_items?limit=3
+
+### Paginate with nextToken
+GET {{HOST}}/list_items?nextToken=05c6f75ddf3e1d58e9fd3124
+
+### Get all with specific category
+GET {{HOST}}/list_items?category=fruit
+
+### Get all with specific category and item name
+GET {{HOST}}/list_items?category=fruit&name=apple

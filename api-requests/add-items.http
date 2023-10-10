@@ -1,0 +1,25 @@
+POST {{HOST}}/item
+Content-Type: application/json
+
+[
+   {
+    "category": "FRUIT",
+    "name": "apple",
+    "type": "macintosh",
+    "stocks": 12,
+    "price": {
+      "inr": 200,
+      "usd": 5
+    }
+  },
+   {
+    "category": "FRUIT",
+    "name": "apple",
+    "type": "royalgala",
+    "stocks": 82,
+    "price": {
+      "inr": 800,
+      "usd": 15
+    }
+  }
+]

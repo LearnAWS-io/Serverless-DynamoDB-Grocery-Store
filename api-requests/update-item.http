@@ -1,0 +1,13 @@
+PATCH {{HOST}}/item/05c7381a84ffdd5375b873b7
+Content-Type: application/json
+
+{
+  "category": "FRUIT",
+  "name": "APPLE",
+  "type": "macintosh",
+  "stocks": 22,
+  "price": {
+    "inr": 240,
+    "usd": 15
+  }
+}

@@ -1,0 +1,2 @@
+### Get a particular item with id
+GET {{HOST}}/item/05c7381a84ffdd5375b873b7
